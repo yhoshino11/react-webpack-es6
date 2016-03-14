@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack-dev-server --progress --colors --watch",
+    "start": "open http://127.0.0.1:8080/webpack-dev-server/"
   },
   "author": "",
   "license": "ISC",
