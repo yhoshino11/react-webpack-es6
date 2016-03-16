@@ -3,21 +3,36 @@ import ReactDOM from 'react-dom';
 import CommentList from './commentList.jsx';
 import CommentForm from './commentForm.jsx';
 
-class CommentBox extends React.Component {
+const CommentBox = React.createClass({
+  getInitialState() {
+    return({data: []});
+  },
+
+  componentDidMount() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: (data => {
+        this.setState({data: data})
+        console.log(data)
+      }).bind(this),
+      error: (status, err => {
+        console.error(this.props.url, status, err.toString())
+      }).bind(this)
+    })
+  },
+
   render() {
     return (
         <div className='commentBox'>
           <h1>Comments</h1>
-          <CommentList data={this.props.data} />
+          <CommentList data={this.state.data} />
           <CommentForm />
         </div>
         )
   }
-}
+})
 
-const data = [
-  {id: 1, author: 'Pete Hunt', text: 'This is one comment.'},
-  {id: 2, author: 'Jordan Walke', text: 'This is *another* comment.'}
-]
-
-ReactDOM.render(<CommentBox data={data} />, document.getElementById('content'));
+let dummy_data_url = 'http://jsonplaceholder.typicode.com/comments';
+ReactDOM.render(<CommentBox url={dummy_data_url} />, document.getElementById('content'));
