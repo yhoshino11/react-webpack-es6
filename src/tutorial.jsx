@@ -23,12 +23,28 @@ const CommentBox = React.createClass({
     })
   },
 
+  handleCommentSubmit(comment) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
+      success: (data =>
+        this.setState({data: this.state.data.concat(data)})
+      ).bind(this),
+      error: (status, err =>
+        console.error(this.props.url, status, err.toString())
+      ).bind(this)
+    })
+  },
+
   render() {
     return (
         <div className='commentBox'>
+          <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+          <hr />
           <h1>Comments</h1>
           <CommentList data={this.state.data} />
-          <CommentForm />
         </div>
         )
   }
